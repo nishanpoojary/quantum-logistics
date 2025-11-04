@@ -1,4 +1,4 @@
-````markdown
+
 ![Java](https://img.shields.io/badge/Java-17-blue?logo=java&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-green?logo=spring&logoColor=white)
 ![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-black?logo=apachekafka&logoColor=white)
@@ -186,5 +186,4 @@ By sending that **one request**, you will trigger three simultaneous actions:
 
 <!-- end list -->
 
-```
 ```
