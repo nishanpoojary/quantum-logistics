@@ -1,0 +1,30 @@
+🚀 Quantum Logistics: AI-Driven Microservices PlatformQuantum Logistics is a complete, end-to-end, event-driven microservices system built to simulate a modern logistics and shipping network. This project demonstrates a cloud-native architecture using Java, Spring Boot, Kafka, and Docker, and serves as a blueprint for a scalable, resilient, and intelligent enterprise system.This project was built to demonstrate core principles of distributed systems, including:Service Discovery (with Eureka)Centralized Entry (with an API Gateway)Event-Driven Architecture (with Kafka)Asynchronous Processing (fan-out pattern)AI Integration (for intelligent routing)🏗️ System ArchitectureThis system uses a "choreography" pattern, where services communicate by producing and consuming events via a central Kafka message bus, without needing to know about each other.Shutterstockgraph TD
+    subgraph "Local Infrastructure (Docker)"
+        Kafka[KAFKA_BUS]
+        Postgres[POSTGRES_DB]
+    end
+
+    subgraph "Application Services (Java/Spring)"
+        A[API Gateway (8085)] --> SR[Service Registry (8761)]
+        B[Shipment Service (8080)] --> SR[Service Registry (8761)]
+        C[Analytics Service (8081)]
+        D[Logistics AI Service (8082)] --> SR[Service Registry (8761)]
+    end
+
+    Postman(CLIENT_REQUEST) --> A
+    A -- /shipment-service/** --> B
+    B -- "Event" --> Kafka
+    Kafka -- "Event" --> C
+    Kafka -- "Event" --> D
+    C --> Postgres
+
+    style Kafka fill:#231F20,color:#FFF,stroke-width:2px,stroke-dasharray: 5 5
+    style Postgres fill:#336791,color:#FFF
+    style Postman fill:#FF6C37,color:#FFF
+Core Servicesservice-registry (Eureka Server):The "phone book" for the system. All other microservices register themselves here, allowing them to find each other by name (e.g., shipment-service) instead of hard-coded ports.api-gateway (Spring Cloud Gateway):The single "front door" for all public traffic. It handles request routing, security (future), and load balancing. It dynamically routes traffic (e.g., /shipment-service/...) by looking up the service's address in the service-registry.shipment-service (Spring Boot):The "worker" service. It exposes the public POST /api/shipments endpoint.Its only job is to validate the request and produce a shipments-created event to the Kafka bus.analytics-service (Spring Boot / Kafka Consumer):A "listener" service. It subscribes to the shipments-created topic.When it "hears" a message, it consumes it, converts it to a database entity, and saves it to the PostgreSQL database.logistics-ai-service (Spring Boot / Spring AI):A second "listener" that demonstrates a fan-out pattern (one event, multiple actions).It also subscribes to the shipments-created topic using a different group-id.It takes the origin and destination, forms a prompt, and calls the OpenAI API to calculate an optimal shipping route, logging the result.🛠️ Technology StackCategoryTechnologyPurposeBackendJava 17Core application languageFrameworkSpring Boot 3Building all 5 microservicesService MeshSpring Cloud GatewayAPI Gateway (Front Door)Service MeshSpring Cloud EurekaService Registry (Phone Book)Events / MessagingApache KafkaAsynchronous event busDatabasePostgreSQLStoring shipment analyticsAISpring AI (OpenAI)Intelligent route calculationDevOpsDocker / Docker ComposeContainerizing & running infrastructureBuildApache MavenProject build and dependency managementTestingPostmanAPI request testing🏁 How to Run This Project1. PrerequisitesJava 17 (JDK)Apache Maven 3.9+Docker DesktopAn OpenAI API Key (for the AI service)VS Code (with the Extension Pack for Java)Postman2. ConfigurationBefore launching, you must provide your OpenAI API key.Go to services/logistics-ai-service/src/main/resources/application.properties.Replace the placeholder YOUR_API_KEY_HERE with your actual OpenAI key:spring.ai.openai.api-key=sk-YourActualKeyGoesHere...
+3. Local Launch Sequence (The "Idiot-Free" Order)This system has 6 components that must be started in order. Open each of the 5 Java services in its own VS Code window.Start the Infrastructure (Docker):Open a terminal in the project's root quantum-logistics folder.cd dockerdocker-compose up -d(This starts Kafka, Zookeeper, Postgres, and the Kafka-UI).Start the "Phone Book" (Service Registry):Open the service-registry project.Run ServiceRegistryApplication.java.✅ Verify: Go to http://localhost:8761/. You should see the Eureka dashboard.Start the "Front Door" (API Gateway):Open the api-gateway project.Run ApiGatewayApplication.java.✅ Verify: Refresh http://localhost:8761/. You should see API-GATEWAY appear in the list.Start the "Listeners" (Analytics & AI):Open the analytics-service project and run AnalyticsServiceApplication.java.Open the logistics-ai-service project and run LogisticsAiServiceApplication.java.✅ Verify: Refresh http://localhost:8761/. You should now see LOGISTICS-AI-SERVICE appear.Start the "Worker" (Shipment Service):Open the shipment-service project.Run ShipmentServiceApplication.java.✅ Verify: Refresh http://localhost:8761/. All 3 services (API-GATEWAY, LOGISTICS-AI-SERVICE, SHIPMENT-SERVICE) should be UP.The entire system is now online.🚀 Testing the Full PipelineUse Postman to send a POST request to the API Gateway (the "Front Door"), not the service itself.URL: POST http://localhost:8085/shipment-service/api/shipmentsBody (JSON):{
+    "origin": "Oracle HQ, Austin, TX",
+    "destination": "Oracle Office, Nashville, TN",
+    "customerId": "CUST-ORACLE-EVENT"
+}
+Expected Fan-Out ResultBy sending that one request, you will trigger three simultaneous actions:In Postman: You will get a 200 OK response immediately.In the analytics-service Terminal: The log Received shipment... CUST-ORACLE-EVENT will appear as it saves the data to Postgres.In the logistics-ai-service Terminal: The log AI SERVICE RECEIVED: CUST-ORACLE-EVENT will appear, followed by an AI RESPONSE: with the calculated optimal route.
