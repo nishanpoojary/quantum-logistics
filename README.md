@@ -23,7 +23,7 @@ This project was built to demonstrate core principles of distributed systems, in
 This system uses a "choreography" pattern, where services communicate by producing and consuming events via a central Kafka message bus, without needing to know about each other.
 
 ```mermaid
-raph TD
+graph TD
     subgraph "Local Infrastructure (Docker)"
         direction LR
         KAFKA_BUS(Kafka Bus)
