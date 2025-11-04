@@ -23,23 +23,23 @@ This project was built to demonstrate core principles of distributed systems, in
 This system uses a "choreography" pattern, where services communicate by producing and consuming events via a central Kafka message bus, without needing to know about each other.
 
 ```mermaid
-graph TD
+raph TD
     subgraph "Local Infrastructure (Docker)"
         direction LR
-        KAFKA_BUS[<img src='[https://static-00.iconduck.com/assets.00/apache-kafka-icon-2048x2022-d1lt50nd.png](https://static-00.iconduck.com/assets.00/apache-kafka-icon-2048x2022-d1lt50nd.png)' width='50' /><br/>Kafka Bus]
-        POSTGRES_DB[<img src='[https://static-00.iconduck.com/assets.00/postgresql-icon-1987x2048-v22kmfxi.png](https://static-00.iconduck.com/assets.00/postgresql-icon-1987x2048-v22kmfxi.png)' width='50' /><br/>PostgreSQL DB]
+        KAFKA_BUS(Kafka Bus)
+        POSTGRES_DB(PostgreSQL DB)
     end
 
     subgraph "Application Services (Java/Spring)"
         direction LR
-        REGISTRY[<img src='[https://spring.io/images/projects/spring-cloud/icon-spring-cloud-light.svg](https://spring.io/images/projects/spring-cloud/icon-spring-cloud-light.svg)' width='50' /><br/>Service Registry (8761)]
-        GATEWAY[<img src='[https://spring.io/images/projects/spring-cloud/icon-spring-cloud-gateway-light.svg](https://spring.io/images/projects/spring-cloud/icon-spring-cloud-gateway-light.svg)' width='50' /><br/>API Gateway (8085)]
-        SERVICE_A[<img src='[https://spring.io/images/projects/spring-boot/icon-spring-boot-light.svg](https://spring.io/images/projects/spring-boot/icon-spring-boot-light.svg)' width='50' /><br/>Shipment Service (8080)]
-        SERVICE_B[<img src='[https://spring.io/images/projects/spring-boot/icon-spring-boot-light.svg](https://spring.io/images/projects/spring-boot/icon-spring-boot-light.svg)' width='50' /><br/>Analytics Service (8081)]
-        SERVICE_C[<img src='[https://spring.io/images/projects/spring-boot/icon-spring-boot-light.svg](https://spring.io/images/projects/spring-boot/icon-spring-boot-light.svg)' width='50' /><br/>Logistics AI Service (8082)]
+        REGISTRY(Service Registry 8761)
+        GATEWAY(API Gateway 8085)
+        SERVICE_A(Shipment Service 8080)
+        SERVICE_B(Analytics Service 8081)
+        SERVICE_C(Logistics AI Service 8082)
     end
 
-    CLIENT[<img src='[https://static-00.iconduck.com/assets.00/postman-icon-497x512-beb7n22c.png](https://static-00.iconduck.com/assets.00/postman-icon-497x512-beb7n22c.png)' width='50' /><br/>Postman Client] --> GATEWAY
+    CLIENT(Postman Client) --> GATEWAY
     
     GATEWAY --> REGISTRY
     SERVICE_A --> REGISTRY
@@ -50,16 +50,7 @@ graph TD
     KAFKA_BUS -- "Consumes (Group 1)" --> SERVICE_B
     KAFKA_BUS -- "Consumes (Group 2)" --> SERVICE_C
     SERVICE_B --> POSTGRES_DB
-
-    style KAFKA_BUS fill:#fff,stroke-width:0px
-    style POSTGRES_DB fill:#fff,stroke-width:0px
-    style REGISTRY fill:#fff,stroke-width:0px
-    style GATEWAY fill:#fff,stroke-width:0px
-    style SERVICE_A fill:#fff,stroke-width:0px
-    style SERVICE_B fill:#fff,stroke-width:0px
-    style SERVICE_C fill:#fff,stroke-width:0px
-    style CLIENT fill:#fff,stroke-width:0px
-
+```
 
 ### Core Services
 
