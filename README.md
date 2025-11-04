@@ -59,7 +59,7 @@ graph TD
     style SERVICE_B fill:#fff,stroke-width:0px
     style SERVICE_C fill:#fff,stroke-width:0px
     style CLIENT fill:#fff,stroke-width:0px
-````
+```
 
 ### Core Services
 
