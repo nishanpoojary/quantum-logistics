@@ -174,7 +174,3 @@ By sending that **one request**, you will trigger three simultaneous actions:
 1.  **In Postman:** You will get a `200 OK` response immediately.
 2.  **In the `analytics-service` Terminal:** The log `Received shipment... CUST-ORACLE-EVENT` will appear as it saves the data to Postgres.
 3.  **In the `logistics-ai-service` Terminal:** The log `AI SERVICE RECEIVED: CUST-ORACLE-EVENT` will appear, followed by an `AI RESPONSE:` with the calculated optimal route.
-
-<!-- end list -->
-
-```
