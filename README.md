@@ -23,14 +23,6 @@ This project was built to demonstrate core principles of distributed systems, in
 This system uses a "choreography" pattern, where services communicate by producing and consuming events via a central Kafka message bus, without needing to know about each other.
 
 ```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
-
-```mermaid
 graph TD
     subgraph "Local Infrastructure (Docker)"
         direction LR
@@ -44,10 +36,10 @@ graph TD
         GATEWAY[<img src='[https://spring.io/images/projects/spring-cloud/icon-spring-cloud-gateway-light.svg](https://spring.io/images/projects/spring-cloud/icon-spring-cloud-gateway-light.svg)' width='50' /><br/>API Gateway (8085)]
         SERVICE_A[<img src='[https://spring.io/images/projects/spring-boot/icon-spring-boot-light.svg](https://spring.io/images/projects/spring-boot/icon-spring-boot-light.svg)' width='50' /><br/>Shipment Service (8080)]
         SERVICE_B[<img src='[https://spring.io/images/projects/spring-boot/icon-spring-boot-light.svg](https://spring.io/images/projects/spring-boot/icon-spring-boot-light.svg)' width='50' /><br/>Analytics Service (8081)]
-        SERVICE_C[<img src='https.spring.io/images/projects/spring-boot/icon-spring-boot-light.svg' width='50' /><br/>Logistics AI Service (8082)]
+        SERVICE_C[<img src='[https://spring.io/images/projects/spring-boot/icon-spring-boot-light.svg](https://spring.io/images/projects/spring-boot/icon-spring-boot-light.svg)' width='50' /><br/>Logistics AI Service (8082)]
     end
 
-    CLIENT[<img src='[https.static-00.iconduck.com/assets.00/postman-icon-497x512-beb7n22c.png](https://https.static-00.iconduck.com/assets.00/postman-icon-497x512-beb7n22c.png)' width='50' /><br/>Postman Client] --> GATEWAY
+    CLIENT[<img src='[https://static-00.iconduck.com/assets.00/postman-icon-497x512-beb7n22c.png](https://static-00.iconduck.com/assets.00/postman-icon-497x512-beb7n22c.png)' width='50' /><br/>Postman Client] --> GATEWAY
     
     GATEWAY --> REGISTRY
     SERVICE_A --> REGISTRY
@@ -67,7 +59,7 @@ graph TD
     style SERVICE_B fill:#fff,stroke-width:0px
     style SERVICE_C fill:#fff,stroke-width:0px
     style CLIENT fill:#fff,stroke-width:0px
-```
+
 
 ### Core Services
 
